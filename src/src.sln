@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Api", "e-Government.Api\e-Government.Api.csproj", "{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD195FC8-B664-46B7-A263-56445EF3C300}
+	EndGlobalSection
+EndGlobal
