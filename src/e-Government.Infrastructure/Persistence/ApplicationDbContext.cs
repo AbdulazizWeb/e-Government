@@ -10,7 +10,7 @@ namespace e_Government.Infrastructure.Persistence
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            :base(options)
+            : base(options)
         {
         }
         public DbSet<Customs> CustomOffices { get; set; }

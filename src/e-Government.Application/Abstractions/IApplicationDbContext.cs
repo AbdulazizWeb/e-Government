@@ -16,7 +16,7 @@ namespace e_Government.Application.Abstractions
         public DbSet<LegalEntity> LegalEntities { get; set; }
         public DbSet<Pasport> Pasports { get; set; }
         public DbSet<Population> Populations { get; set; }
-        public DbSet<PopulationPopulation> PopulationPopulations { get; set;}
+        public DbSet<PopulationPopulation> PopulationPopulations { get; set; }
         public DbSet<Address> Address { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

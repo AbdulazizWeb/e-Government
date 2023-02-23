@@ -1,16 +1,11 @@
 ﻿using e_Government.Domain.Entities.ForeignSection;
 using e_Government.Domain.Entities.Legal;
 using e_Government.Domain.Entities.PopulationSection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace e_Government.Domain.Entities
 {
     public class Address
-    {        
+    {
         public int Id { get; set; }
         public string HomeName { get; set; }
         public string Street { get; set; }

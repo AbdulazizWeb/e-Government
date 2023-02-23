@@ -6,9 +6,6 @@ namespace e_Government.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-
-            
-
             return services;
         }
     }
