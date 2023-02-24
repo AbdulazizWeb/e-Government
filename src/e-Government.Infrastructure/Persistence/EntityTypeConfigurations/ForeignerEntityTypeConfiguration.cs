@@ -1,14 +1,14 @@
-﻿using e_Government.Domain.Entities.ForeignSection;
+﻿using e_Government.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations.ETCForeignSection
+namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations
 {
     public class ForeignerEntityTypeConfiguration : IEntityTypeConfiguration<Foreigner>
     {
         public void Configure(EntityTypeBuilder<Foreigner> builder)
         {
-            builder.HasKey(e => e.Id);
+            builder.ToTable("Foreigners");
         }
     }
 }
