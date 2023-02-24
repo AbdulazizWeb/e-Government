@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations.ETCPopulationSection
 {
-    public class PopulationPopulationEntityTypeConfiguration : IEntityTypeConfiguration<PopulationPopulation>
+    public class PopulationPopulationEntityTypeConfiguration : IEntityTypeConfiguration<PopulationFamily>
     {
-        public void Configure(EntityTypeBuilder<PopulationPopulation> builder)
+        public void Configure(EntityTypeBuilder<PopulationFamily> builder)
         {
             builder.HasKey(x => x.Id);
 

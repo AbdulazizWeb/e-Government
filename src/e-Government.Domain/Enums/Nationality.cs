@@ -1,4 +1,10 @@
-﻿namespace e_Government.Domain.Enums
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_Government.Domain.Enums
 {
     public enum Nationality
     {
@@ -13,23 +19,23 @@
         Austria = 8,
         Azerbaijan = 9,
         Bahrain = 10,
-        Bangladesh = 11,
-        Barbados = 12,
-        Belarus = 13,
-        Belgium = 14,
-        Belize = 15,
-        Benin = 16,
-        Bhutan = 17,
-        Bolivia = 18,
-        Bosnia_and_Herzegovina = 19,
-        Botswana = 20,
-        Brazil = 21,
-        Brunei = 22,
-        Bulgaria = 23,
-        Burkina_Faso = 24,
-        Burundi = 25,
-        Cabo_Verde = 26,
-        Cambodia = 27
+        Bangladesh=11,
+        Barbados=12,
+        Belarus=13,
+        Belgium=14,
+        Belize=15,
+        Benin=16,
+        Bhutan=17,
+        Bolivia=18,
+        Bosnia_and_Herzegovina=19,
+        Botswana=20,
+        Brazil=21,
+        Brunei=22,
+        Bulgaria=23,
+        Burkina_Faso=24,   
+        Burundi=25,
+        Cabo_Verde=26,
+        Cambodia=27        
     }
 }
 /*Cameroon

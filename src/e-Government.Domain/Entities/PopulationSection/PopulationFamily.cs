@@ -1,4 +1,9 @@
 ﻿using e_Government.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace e_Government.Domain.Entities.PopulationSection
 {
@@ -6,9 +11,9 @@ namespace e_Government.Domain.Entities.PopulationSection
     {
         public int Id { get; set; }
         public int Population1Id { get; set; }
-        public Relative Relative { get; set; }
+        public Relative Relative { get; set; } 
         public int Population2Id { get; set; }
-
+               
         public Population Population { get; set; }
     }
 }

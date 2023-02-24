@@ -1,4 +1,10 @@
-﻿namespace e_Government.Domain.Entities.ForeignSection
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_Government.Domain.Entities.ForeignSection
 {
     public class Visa
     {
