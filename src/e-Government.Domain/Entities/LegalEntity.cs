@@ -9,6 +9,7 @@ namespace e_Government.Domain.Entities
             Certificates = new HashSet<Certificate>();
             DocumentInformations = new HashSet<DocumentInformation>();
             LegalEntityAddresses = new HashSet<LegalEntityAddress>();
+            LegalEntityPopulation = new HashSet<PopulationLegalEntity>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace e_Government.Domain.Entities
         public ICollection<Certificate> Certificates { get; set; }
         public ICollection<DocumentInformation> DocumentInformations { get; set; }
         public ICollection<LegalEntityAddress> LegalEntityAddresses { get; set; }
+        public ICollection<PopulationLegalEntity> LegalEntityPopulation { get; set; }
     }
 }
