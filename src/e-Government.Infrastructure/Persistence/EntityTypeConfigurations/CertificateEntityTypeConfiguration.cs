@@ -1,25 +1,20 @@
-﻿using e_Government.Domain.Entities.Legal;
+﻿using e_Government.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations.ETCLegalSection
+namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations
 {
     public class CertificateEntityTypeConfiguration : IEntityTypeConfiguration<Certificate>
     {
         public void Configure(EntityTypeBuilder<Certificate> builder)
         {
-            builder.HasKey(x => x.SerialNumber);
+            builder.ToTable("Certificates");
 
-            builder.HasIndex(x => x.SerialNumber);
-
-            builder.HasOne(x => x.IssuedByBranch)
-                .WithMany(x => x.Certificates)
-                .HasForeignKey(x => x.IssuedByBranchId);
+            builder.HasIndex(x => x.SerialNumber).IsUnique();
 
             builder.HasOne(x => x.LegalEntity)
                 .WithMany(x => x.Certificates)
                 .HasForeignKey(x => x.LegalEntityId);
-
         }
     }
 }

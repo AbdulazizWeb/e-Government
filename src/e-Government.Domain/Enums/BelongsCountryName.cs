@@ -1,9 +1,9 @@
 ﻿namespace e_Government.Domain.Enums
 {
-    public enum CountryNameCitizenship
+    public enum BelongsCountryName
     {
-        Afghanistan = 0,
-        Albania = 1,
+        Stateless_person = 0,
+        Uzbekistan = 1,
         Algeria = 2,
         Andorra = 3,
         Angola = 4,
