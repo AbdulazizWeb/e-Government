@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Api", "e-Government.Api\e-Government.Api.csproj", "{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "e-Government.Api", "e-Government.Api\e-Government.Api.csproj", "{6A2B65E9-645C-45C9-A9EE-350C8A76B06B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Domain", "e-Government.Domain\e-Government.Domain.csproj", "{DB54C1F7-C4C7-4413-847E-6F165C21BBAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "e-Government.Domain", "e-Government.Domain\e-Government.Domain.csproj", "{DB54C1F7-C4C7-4413-847E-6F165C21BBAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Application", "e-Government.Application\e-Government.Application.csproj", "{49944ECA-25F2-4000-BD3E-21204792AE64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "e-Government.Application", "e-Government.Application\e-Government.Application.csproj", "{49944ECA-25F2-4000-BD3E-21204792AE64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Infrastructure", "e-Government.Infrastructure\e-Government.Infrastructure.csproj", "{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "e-Government.Infrastructure", "e-Government.Infrastructure\e-Government.Infrastructure.csproj", "{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Government.Testing", "e-Government.Testing\e-Government.Testing.csproj", "{2295380C-8D30-4D1B-91D7-9C8BE178D135}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6DFE3596-2C01-4917-A927-C25623058979}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{64EC37AF-008C-4D21-9DA3-D4B1B374D1BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Goverment.Application.Tests", "e-Goverment.Application.Tests\e-Goverment.Application.Tests.csproj", "{8CFD5191-BE5E-46A7-86D9-954BFA661B37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,13 +39,20 @@ Global
 		{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2295380C-8D30-4D1B-91D7-9C8BE178D135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2295380C-8D30-4D1B-91D7-9C8BE178D135}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2295380C-8D30-4D1B-91D7-9C8BE178D135}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2295380C-8D30-4D1B-91D7-9C8BE178D135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFD5191-BE5E-46A7-86D9-954BFA661B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFD5191-BE5E-46A7-86D9-954BFA661B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFD5191-BE5E-46A7-86D9-954BFA661B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFD5191-BE5E-46A7-86D9-954BFA661B37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A2B65E9-645C-45C9-A9EE-350C8A76B06B} = {6DFE3596-2C01-4917-A927-C25623058979}
+		{DB54C1F7-C4C7-4413-847E-6F165C21BBAC} = {6DFE3596-2C01-4917-A927-C25623058979}
+		{49944ECA-25F2-4000-BD3E-21204792AE64} = {6DFE3596-2C01-4917-A927-C25623058979}
+		{BE31AC02-DA13-4B0F-B55A-BA0733CD0A8E} = {6DFE3596-2C01-4917-A927-C25623058979}
+		{8CFD5191-BE5E-46A7-86D9-954BFA661B37} = {64EC37AF-008C-4D21-9DA3-D4B1B374D1BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AD195FC8-B664-46B7-A263-56445EF3C300}
