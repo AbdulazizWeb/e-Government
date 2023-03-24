@@ -4,13 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations
 {
-    public class PasportEntityTypeConfiguration : IEntityTypeConfiguration<Pasport>
+    public class PasportEntityTypeConfiguration : IEntityTypeConfiguration<Passport>
     {
-        public void Configure(EntityTypeBuilder<Pasport> builder)
+        public void Configure(EntityTypeBuilder<Passport> builder)
         {
             builder.ToTable("Pasports");
-
-            builder.HasIndex(x => x.SerialNumber).IsUnique();
 
             builder.HasOne(x => x.Population)
                 .WithMany(x => x.Pasports)

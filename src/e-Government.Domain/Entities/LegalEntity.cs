@@ -7,7 +7,6 @@ namespace e_Government.Domain.Entities
         public LegalEntity()
         {
             Certificates = new HashSet<Certificate>();
-            DocumentInformations = new HashSet<DocumentInformation>();
             LegalEntityAddresses = new HashSet<LegalEntityAddress>();
             LegalEntityPopulation = new HashSet<PopulationLegalEntity>();
         }
@@ -17,7 +16,6 @@ namespace e_Government.Domain.Entities
         public Direction Direction { get; set; }
 
         public ICollection<Certificate> Certificates { get; set; }
-        public ICollection<DocumentInformation> DocumentInformations { get; set; }
         public ICollection<LegalEntityAddress> LegalEntityAddresses { get; set; }
         public ICollection<PopulationLegalEntity> LegalEntityPopulation { get; set; }
     }

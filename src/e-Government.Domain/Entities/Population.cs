@@ -4,16 +4,16 @@
     {
         public Population()
         {
-            Pasports = new HashSet<Pasport>();
+            Pasports = new HashSet<Passport>();
             PopulationAddresses = new HashSet<PopulationAddress>();
             PopulationFamilies = new HashSet<PopulationFamily>();
             FamilyPopulation = new HashSet<PopulationFamily>();
             PopulationLegalEntities = new HashSet<PopulationLegalEntity>();
         }
 
-        public DateTime DiedDay { get; set; }
+        public DateOnly DiedDay { get; set; }
 
-        public ICollection<Pasport> Pasports { get; set; }
+        public ICollection<Passport> Pasports { get; set; }
         public ICollection<PopulationAddress> PopulationAddresses { get; set; }
         public ICollection<PopulationFamily> PopulationFamilies { get; set; }
         public ICollection<PopulationFamily> FamilyPopulation { get; set; }

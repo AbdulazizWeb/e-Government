@@ -10,8 +10,6 @@ namespace e_Government.Infrastructure.Persistence.EntityTypeConfigurations
         {
             builder.ToTable("Visas");
 
-            builder.HasIndex(x => x.SerialNumber).IsUnique();
-
             builder.HasOne(x => x.Foreigner)
                 .WithMany(x => x.Visas)
                 .HasForeignKey(x => x.ForeignerId);

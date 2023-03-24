@@ -5,7 +5,6 @@
         public EntityNotFoundException(string entityName)
             : base($"{entityName} not found")
         {
-
         }
     }
 }
