@@ -12,8 +12,8 @@ using e_Government.Infrastructure.Persistence;
 namespace e_Government.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230304041333_Changed_Entities3")]
-    partial class Changed_Entities3
+    [Migration("20230310164224_Fix_DateTime_in_Person2")]
+    partial class Fix_DateTime_in_Person2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,8 +117,8 @@ namespace e_Government.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("Birthday")
+                        .HasColumnType("date");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -135,9 +135,8 @@ namespace e_Government.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("NationalityName")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -272,8 +271,8 @@ namespace e_Government.Infrastructure.Migrations
                 {
                     b.HasBaseType("e_Government.Domain.Entities.Person");
 
-                    b.Property<DateTime>("DiedDay")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DiedDay")
+                        .HasColumnType("date");
 
                     b.ToTable("Populations", (string)null);
                 });

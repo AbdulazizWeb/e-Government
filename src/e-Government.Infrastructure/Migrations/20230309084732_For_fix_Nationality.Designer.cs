@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using e_Government.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using e_Government.Infrastructure.Persistence;
 namespace e_Government.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230309084732_For_fix_Nationality")]
+    partial class For_fix_Nationality
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
 
                     b.UseTptMappingStrategy();
                 });
@@ -81,7 +84,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Documents", (string)null);
+                    b.ToTable("Documents");
 
                     b.UseTptMappingStrategy();
                 });
@@ -103,7 +106,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LegalEntities", (string)null);
+                    b.ToTable("LegalEntities");
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.Person", b =>
@@ -137,7 +140,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons", (string)null);
+                    b.ToTable("Persons");
 
                     b.UseTptMappingStrategy();
                 });
@@ -165,7 +168,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasIndex("Population2Id");
 
-                    b.ToTable("PopulationFamilies", (string)null);
+                    b.ToTable("PopulationFamilies");
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.PopulationLegalEntity", b =>
@@ -194,7 +197,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasIndex("PopulationId");
 
-                    b.ToTable("PopulationLegalEntity", (string)null);
+                    b.ToTable("PopulationLegalEntity");
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.LegalEntityAddress", b =>

@@ -12,8 +12,8 @@ using e_Government.Infrastructure.Persistence;
 namespace e_Government.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230225072923_AddedAdmin_and_PopulationLagalEntity")]
-    partial class AddedAdmin_and_PopulationLagalEntity
+    [Migration("20230309154549_Changed_Birthday_DateOnly")]
+    partial class Changed_Birthday_DateOnly
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,12 +47,12 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
 
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("e_Government.Domain.Entities.DocumentInformation", b =>
+            modelBuilder.Entity("e_Government.Domain.Entities.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,15 +72,17 @@ namespace e_Government.Infrastructure.Migrations
                     b.Property<bool>("IsValidity")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("IssuedByBranchLegalEntityId")
-                        .HasColumnType("integer");
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StoppedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("ValidityPeriod")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IssuedByBranchLegalEntityId");
 
                     b.ToTable("Documents");
 
@@ -115,8 +117,8 @@ namespace e_Government.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("Birthday")
+                        .HasColumnType("date");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -133,9 +135,8 @@ namespace e_Government.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("NationalityName")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -225,57 +226,36 @@ namespace e_Government.Infrastructure.Migrations
 
             modelBuilder.Entity("e_Government.Domain.Entities.Certificate", b =>
                 {
-                    b.HasBaseType("e_Government.Domain.Entities.DocumentInformation");
+                    b.HasBaseType("e_Government.Domain.Entities.Document");
 
                     b.Property<int>("LegalEntityId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("SerialNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasIndex("LegalEntityId");
-
-                    b.HasIndex("SerialNumber")
-                        .IsUnique();
 
                     b.ToTable("Certificates", (string)null);
                 });
 
-            modelBuilder.Entity("e_Government.Domain.Entities.Pasport", b =>
+            modelBuilder.Entity("e_Government.Domain.Entities.Passport", b =>
                 {
-                    b.HasBaseType("e_Government.Domain.Entities.DocumentInformation");
+                    b.HasBaseType("e_Government.Domain.Entities.Document");
 
                     b.Property<int>("PopulationId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("SerialNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasIndex("PopulationId");
-
-                    b.HasIndex("SerialNumber")
-                        .IsUnique();
 
                     b.ToTable("Pasports", (string)null);
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.Visa", b =>
                 {
-                    b.HasBaseType("e_Government.Domain.Entities.DocumentInformation");
+                    b.HasBaseType("e_Government.Domain.Entities.Document");
 
                     b.Property<int>("ForeignerId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("SerialNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasIndex("ForeignerId");
-
-                    b.HasIndex("SerialNumber")
-                        .IsUnique();
 
                     b.ToTable("Visas", (string)null);
                 });
@@ -291,8 +271,8 @@ namespace e_Government.Infrastructure.Migrations
                 {
                     b.HasBaseType("e_Government.Domain.Entities.Person");
 
-                    b.Property<DateTime>("DiedDay")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DiedDay")
+                        .HasColumnType("date");
 
                     b.ToTable("Populations", (string)null);
                 });
@@ -302,17 +282,6 @@ namespace e_Government.Infrastructure.Migrations
                     b.HasBaseType("e_Government.Domain.Entities.Population");
 
                     b.ToTable("Admins", (string)null);
-                });
-
-            modelBuilder.Entity("e_Government.Domain.Entities.DocumentInformation", b =>
-                {
-                    b.HasOne("e_Government.Domain.Entities.LegalEntity", "IssuedByBranchLegalEntity")
-                        .WithMany("DocumentInformations")
-                        .HasForeignKey("IssuedByBranchLegalEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IssuedByBranchLegalEntity");
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.PopulationFamily", b =>
@@ -389,7 +358,7 @@ namespace e_Government.Infrastructure.Migrations
 
             modelBuilder.Entity("e_Government.Domain.Entities.Certificate", b =>
                 {
-                    b.HasOne("e_Government.Domain.Entities.DocumentInformation", null)
+                    b.HasOne("e_Government.Domain.Entities.Document", null)
                         .WithOne()
                         .HasForeignKey("e_Government.Domain.Entities.Certificate", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -404,11 +373,11 @@ namespace e_Government.Infrastructure.Migrations
                     b.Navigation("LegalEntity");
                 });
 
-            modelBuilder.Entity("e_Government.Domain.Entities.Pasport", b =>
+            modelBuilder.Entity("e_Government.Domain.Entities.Passport", b =>
                 {
-                    b.HasOne("e_Government.Domain.Entities.DocumentInformation", null)
+                    b.HasOne("e_Government.Domain.Entities.Document", null)
                         .WithOne()
-                        .HasForeignKey("e_Government.Domain.Entities.Pasport", "Id")
+                        .HasForeignKey("e_Government.Domain.Entities.Passport", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -429,7 +398,7 @@ namespace e_Government.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("e_Government.Domain.Entities.DocumentInformation", null)
+                    b.HasOne("e_Government.Domain.Entities.Document", null)
                         .WithOne()
                         .HasForeignKey("e_Government.Domain.Entities.Visa", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,8 +437,6 @@ namespace e_Government.Infrastructure.Migrations
             modelBuilder.Entity("e_Government.Domain.Entities.LegalEntity", b =>
                 {
                     b.Navigation("Certificates");
-
-                    b.Navigation("DocumentInformations");
 
                     b.Navigation("LegalEntityAddresses");
 

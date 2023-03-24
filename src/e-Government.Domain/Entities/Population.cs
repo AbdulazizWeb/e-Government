@@ -11,7 +11,7 @@
             PopulationLegalEntities = new HashSet<PopulationLegalEntity>();
         }
 
-        public DateTime DiedDay { get; set; }
+        public DateOnly DiedDay { get; set; }
 
         public ICollection<Passport> Pasports { get; set; }
         public ICollection<PopulationAddress> PopulationAddresses { get; set; }

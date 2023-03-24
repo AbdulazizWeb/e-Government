@@ -23,37 +23,48 @@ namespace e_Government.Application.UseCases.AboutPopulation.Queries
 
         public async Task<ResponsePopulationModel> Handle(GetPopulationByIdQuery request, CancellationToken cancellationToken)
         {
-            var population = await _dbContext.Populations.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var population = await _dbContext.Populations
+                .Include(x=> x.PopulationAddresses)
+                .Include(x => x.Pasports)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (population == null)
             {
                 throw new PopulationNotFoundException();
-            }
-
-            var populationAddress = await _dbContext.PopulationAddresses
-                .Include(x => x.Population)
-                .FirstOrDefaultAsync(x => x.PopulationId == request.Id, cancellationToken);
-
-            var populationPassport = await _dbContext.Passports
-                .Include(x => x.Population)
-                .FirstOrDefaultAsync(x => x.PopulationId == request.Id, cancellationToken);
-
-            var responseAddres = _bringAddressService.BringFullAddress(populationAddress.Id);
+            }            
 
             return new ResponsePopulationModel
             {
                 PopulationId = population.Id,
-                PassportSerialNumber = populationPassport.SerialNumber,
                 FirstName = population.FirstName,
                 LastName = population.LastName,
                 MidleName = population.MidleName,
                 Gender = population.Gender,
                 Birthday = population.Birthday,
                 Nationality = population.NationalityName,
-                AddressId = populationAddress.Id,
-                LocatedBuildingNumber = responseAddres.BuildingNumber,
-                LocatedStreetName = responseAddres.StreetName,
-                LocatedCityName = responseAddres.CityName
+
+                Passports = population.Pasports.Select(x => new DocumentViewModel
+                {
+                    Id = x.Id,
+                    SerialNumber = x.SerialNumber,
+                    DateOfIssue = x.DateOfIssue,
+                    ValidityPeriod = x.ValidityPeriod,
+                    StoppedDate = x.StoppedDate,
+                    IsValidity = x.IsValidity,
+                    IsLast = x.IsLast,
+                    BelongsCountryName = x.BelongsCountryName
+                }).OrderBy(x => x.Id).ToList(),
+
+                Addresses = population.PopulationAddresses.Select(x => new AddressViewModel
+                {
+                    Id = x.Id,
+                    BuildingNumber = _bringAddressService.BringFullAddress(x.Id).BuildingNumber,
+                    StreetName = _bringAddressService.BringFullAddress(x.Id).StreetName,
+                    CityName = _bringAddressService.BringFullAddress(x.Id).CityName,
+                    StartDateOfUse = x.StartDateOfUse,
+                    EndDateOfUse = x.EndDateOfUse,
+                    IsLastAddress = x.IsLastAddress
+                }).OrderBy(x => x.Id).ToList()                
             };
         }
     }

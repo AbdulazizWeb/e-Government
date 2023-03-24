@@ -18,7 +18,7 @@ namespace e_Government.Api.Controllers
         }
 
         [HttpPost("ByAdmin")]
-        public async Task<IActionResult> Registr(PopulationRegistrByAdminCommand registrByAdminCommand)
+        public async Task<IActionResult> Registr([FromForm] PopulationRegistrByAdminCommand registrByAdminCommand)
         {
             var response = await _mediator.Send(registrByAdminCommand);
 
@@ -26,7 +26,7 @@ namespace e_Government.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registr(PopulationRegistrCommand registrCommand)
+        public async Task<IActionResult> Registr([FromForm] PopulationRegistrCommand registrCommand)
         {
             var response = await _mediator.Send(registrCommand);
 
@@ -34,7 +34,7 @@ namespace e_Government.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> GreateNewCertificate(GreateNewPasspotrForPopulationCommand greateNewPassportCommand)
+        public async Task<IActionResult> GreateNewCertificate([FromForm] GreateNewPasspotrForPopulationCommand greateNewPassportCommand)
         {
             var response = await _mediator.Send(greateNewPassportCommand);
 

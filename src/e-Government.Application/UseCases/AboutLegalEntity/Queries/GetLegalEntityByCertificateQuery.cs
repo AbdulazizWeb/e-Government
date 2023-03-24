@@ -24,28 +24,41 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Queries
         {
             var legalEntityCertificate = await _dbContext.Certificates
                 .Include(x => x.LegalEntity)
-                .FirstOrDefaultAsync(x => x.SerialNumber == request.CertificateSerialNumber, cancellationToken);
+                .ThenInclude(x => x.LegalEntityAddresses)
+                .FirstOrDefaultAsync(x => x.SerialNumber.Contains(request.CertificateSerialNumber) && x.IsLast == true, cancellationToken);
 
             if (legalEntityCertificate == null)
             {
                 throw new CertificateNotFoundException();
-            }
-            var legalEntityAddress = await _dbContext.LegalAddresses
-                .Include(x => x.LegalEntity)
-                .FirstOrDefaultAsync(x => x.LegalEntityId == legalEntityCertificate.LegalEntityId, cancellationToken);
-
-            var responseAddres = _bringAddressService.BringFullAddress(legalEntityAddress.Id);
+            }            
 
             return new ResponseLegalEntityModel
             {
                 LegalEntityId = legalEntityCertificate.LegalEntityId,
                 Name = legalEntityCertificate.LegalEntity.Name,
                 Direction = legalEntityCertificate.LegalEntity.Direction,
-                CertificateSerialNumber = legalEntityCertificate.SerialNumber,
-                AddressId = legalEntityAddress.Id,
-                BuildingNumber = responseAddres.BuildingNumber,
-                StreetName = responseAddres.StreetName,
-                CityName = responseAddres.CityName
+
+                Certificates = legalEntityCertificate.LegalEntity.Certificates.Select(x => new DocumentViewModel
+                {
+                    Id = x.Id,
+                    SerialNumber = x.SerialNumber,
+                    DateOfIssue = x.DateOfIssue,
+                    ValidityPeriod = x.ValidityPeriod,
+                    StoppedDate = x.StoppedDate,
+                    IsValidity = x.IsValidity,
+                    IsLast = x.IsLast,
+                    BelongsCountryName = x.BelongsCountryName
+                }).OrderBy(x => x.Id).ToList(),
+                Addresses = legalEntityCertificate.LegalEntity.LegalEntityAddresses.Select(x => new AddressViewModel
+                {
+                    Id = x.Id,
+                    BuildingNumber = _bringAddressService.BringFullAddress(x.Id).BuildingNumber,
+                    StreetName = _bringAddressService.BringFullAddress(x.Id).StreetName,
+                    CityName = _bringAddressService.BringFullAddress(x.Id).CityName,
+                    StartDateOfUse = x.StartDateOfUse,
+                    EndDateOfUse = x.EndDateOfUse,
+                    IsLastAddress = x.IsLastAddress
+                }).OrderBy(x => x.Id).ToList(),
             };
         }
     }

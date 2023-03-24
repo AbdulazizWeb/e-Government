@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using e_Government.Infrastructure.Persistence;
@@ -12,11 +11,9 @@ using e_Government.Infrastructure.Persistence;
 namespace e_Government.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230309081734_For_fix_Nationality1")]
-    partial class For_fix_Nationality1
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +44,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -84,7 +81,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -106,7 +103,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LegalEntities");
+                    b.ToTable("LegalEntities", (string)null);
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.Person", b =>
@@ -117,8 +114,8 @@ namespace e_Government.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("Birthday")
+                        .HasColumnType("date");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -140,7 +137,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Persons", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -168,7 +165,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasIndex("Population2Id");
 
-                    b.ToTable("PopulationFamilies");
+                    b.ToTable("PopulationFamilies", (string)null);
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.PopulationLegalEntity", b =>
@@ -197,7 +194,7 @@ namespace e_Government.Infrastructure.Migrations
 
                     b.HasIndex("PopulationId");
 
-                    b.ToTable("PopulationLegalEntity");
+                    b.ToTable("PopulationLegalEntity", (string)null);
                 });
 
             modelBuilder.Entity("e_Government.Domain.Entities.LegalEntityAddress", b =>
@@ -271,8 +268,8 @@ namespace e_Government.Infrastructure.Migrations
                 {
                     b.HasBaseType("e_Government.Domain.Entities.Person");
 
-                    b.Property<DateTime>("DiedDay")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DiedDay")
+                        .HasColumnType("date");
 
                     b.ToTable("Populations", (string)null);
                 });

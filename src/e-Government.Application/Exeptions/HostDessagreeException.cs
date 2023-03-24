@@ -2,11 +2,11 @@
 {
     public class HostDessagreeException : Exception
     {
-        private const string notFound = "The host disagrees!!!";
+        private const string deesagree = "The host disagrees!!!";
         public HostDessagreeException()
-            : base(notFound) { }
+            : base(deesagree) { }
 
         public HostDessagreeException(Exception innerException)
-            : base(notFound, innerException) { }
+            : base(deesagree, innerException) { }
     }
 }

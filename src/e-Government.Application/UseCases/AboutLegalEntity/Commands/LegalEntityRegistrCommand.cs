@@ -33,8 +33,22 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
 
         public async Task<string> Handle(LegalEntityRegistrCommand request, CancellationToken cancellationToken)
         {
+            if (request.Name == "Government" || request.Name == "Hospital" || request.Name == "Economy" || request.Name == "Security" || request.Name == "Transport")
+            {
+                if (request.Name == "Government" && request.Direction.ToString() == "Government" || request.Name == "Hospital" && request.Direction.ToString() == "Hospital" || request.Name == "Economy" && request.Direction.ToString() == "Economy" || request.Name == "Security" && request.Direction.ToString() == "Security" || request.Name == "Transport" && request.Direction.ToString() == "Transport")
+                {
+                    if (await _dbContext.LegalEntities.AnyAsync(x => x.Name == request.Name && x.Direction == request.Direction, cancellationToken))
+                    {
+                        throw new LegalEntityDublicationException();
+                    }
+                }
+                else
+                {
+                    throw new UsingMinistryNameException();
+                }
+            }
 
-            if (await _dbContext.LegalEntities.AnyAsync(x => x.Name == request.Name && x.Direction == request.Direction))
+            if (await _dbContext.LegalEntities.AnyAsync(x => x.Name == request.Name && x.Direction == request.Direction, cancellationToken))
             {
                 throw new LegalEntityDublicationException();
             }
@@ -46,7 +60,9 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
                 CityName = request.LocatedCityName
             });
 
-            var hostDocument = await _dbContext.Documents.FirstOrDefaultAsync(x => x.SerialNumber.Contains(responseAddress.HostId.ToString()) && x.IsValidity == true, cancellationToken);
+            var codForSearchFromDb = "C:" + responseAddress.HostId.ToString() + ":";
+
+            var hostDocument = await _dbContext.Documents.FirstOrDefaultAsync(x => x.SerialNumber.Contains(codForSearchFromDb) && x.IsValidity == true, cancellationToken);
 
             var consentFromHost = _getHostConsentService.GetHostConsent(new RequestGetHostConsentModel
             {
@@ -72,7 +88,8 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
                 ValidityPeriod = DateTime.UtcNow.AddYears(1),
                 IsValidity = true,
                 IsLast = true,
-                BelongsCountryName = BelongsCountryName.Uzbekistan
+                BelongsCountryName = BelongsCountryName.Uzbekistan,
+                SerialNumber = "C:"
             };
 
             var address = new LegalEntityAddress
@@ -85,6 +102,7 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
 
             await _dbContext.Certificates.AddAsync(certificate, cancellationToken);
             await _dbContext.LegalEntities.AddAsync(legalEntity, cancellationToken);
+            await _dbContext.LegalAddresses.AddAsync(address, cancellationToken);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -94,9 +112,8 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
                 DocumentId = certificate.Id,
             });
 
-            certificate.SerialNumber = "C:" + number;            
+            certificate.SerialNumber += number;            
 
-            await _dbContext.LegalAddresses.AddAsync(address, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return certificate.SerialNumber;

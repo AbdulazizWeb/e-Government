@@ -54,8 +54,8 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 LastName = request.LastName,
                 MidleName = request.MidleName,
                 Gender = request.Gender,
-                Birthday = request.Birthday,
-                NationalityName = request.Nationality,
+                Birthday = DateOnly.FromDateTime(request.Birthday),
+                NationalityName = request.Nationality
             };
 
             var passport = new Passport
@@ -65,7 +65,8 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 ValidityPeriod = DateTime.UtcNow.AddYears(1),
                 IsValidity = true,
                 IsLast = true,
-                BelongsCountryName = request.BelongsCountryName
+                BelongsCountryName = request.BelongsCountryName,
+                SerialNumber = "P:"
             };
 
             var address = new PopulationAddress
@@ -76,7 +77,8 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 IsLastAddress = true
             };
 
-           
+            await _dbContext.PopulationAddresses.AddAsync(address, cancellationToken);
+            await _dbContext.Passports.AddAsync(passport, cancellationToken);
             await _dbContext.Populations.AddAsync(population, cancellationToken);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -87,10 +89,7 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 DocumentId = passport.Id,
             });
 
-            passport.SerialNumber = "P:" + number;
-
-            await _dbContext.PopulationAddresses.AddAsync(address, cancellationToken);
-            await _dbContext.Passports.AddAsync(passport, cancellationToken);
+            passport.SerialNumber += number;            
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

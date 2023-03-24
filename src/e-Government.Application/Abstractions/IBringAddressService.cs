@@ -6,6 +6,5 @@ namespace e_Government.Application.Abstractions
     {
         ResponseAddressModel BringAddressId(RequestAddressModel searchAddressModel);
         RequestAddressModel BringFullAddress(int id);
-
     }
 }

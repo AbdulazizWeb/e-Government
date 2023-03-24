@@ -7,7 +7,7 @@ namespace e_Government.Infrastructure.Services
     {
         public string Generate(GenerateSerialNumberServiceModel model)
         {
-            return model.EntityId.ToString() + "/" + model.DocumentId.ToString();
+            return model.EntityId.ToString() + ":" + model.DocumentId.ToString();
         }
     }
 }

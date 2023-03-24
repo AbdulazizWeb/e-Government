@@ -36,45 +36,63 @@ namespace e_Government.Application.UseCases.AboutForeigner.Commands
         }
         public async Task<string> Handle(ForeignerRegistrCommand request, CancellationToken cancellationToken)
         {
-            if (await _dbContext.Foreigners.AnyAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName && x.MidleName == request.MidleName && x.Birthday == request.Birthday, cancellationToken))
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken))
             {
-                throw new ForeignerDublicationException();
+                try
+                {
+                    if (await _dbContext.Foreigners.AnyAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName && x.MidleName == request.MidleName && x.Birthday == DateOnly.FromDateTime(request.Birthday), cancellationToken))
+                    {
+                        throw new ForeignerDublicationException();
+                    }
+
+                    var foreigner = new Foreigner
+                    {
+                        FirstName = request.FirstName,
+                        LastName = request.LastName,
+                        MidleName = request.MidleName,
+                        Gender = request.Gender,
+                        Birthday = DateOnly.FromDateTime(request.Birthday),
+                        NationalityName = request.Nationality
+                    };
+
+                    var visa = new Visa
+                    {
+                        Foreigner = foreigner,
+                        DateOfIssue = DateTime.UtcNow,
+                        ValidityPeriod = DateTime.UtcNow.AddYears(1),
+                        IsLast = true,
+                        IsValidity = true,
+                        BelongsCountryName = request.BelongsCountry,
+                        SerialNumber = "V:"
+                    };
+
+                    await _dbContext.Visas.AddAsync(visa, cancellationToken);
+                    await _dbContext.Foreigners.AddAsync(foreigner, cancellationToken);
+
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+
+                    var number = _generateSerialNumberService.Generate(new GenerateSerialNumberServiceModel
+                    {
+                        EntityId = foreigner.Id,
+                        DocumentId = visa.Id,
+                    });
+
+                    visa.SerialNumber += number;
+
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+
+                    await transaction.CommitAsync(cancellationToken);
+
+                    return visa.SerialNumber;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw;
+                }
             }
 
-            var foreigner = new Foreigner
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                MidleName = request.MidleName,
-                Gender = request.Gender,
-                Birthday = request.Birthday,
-                NationalityName = request.Nationality
-            };
-
-            var visa = new Visa
-            {
-                Foreigner = foreigner,
-                DateOfIssue = DateTime.UtcNow,
-                ValidityPeriod = DateTime.UtcNow.AddYears(1),
-                IsLast = true,
-                IsValidity = true,
-                BelongsCountryName = request.BelongsCountry
-            };
-
-            var number = _generateSerialNumberService.Generate(new GenerateSerialNumberServiceModel
-            {
-                EntityId = foreigner.Id,
-                DocumentId = visa.Id,
-            });
-
-            visa.SerialNumber = "V:" + number;
-
-            await _dbContext.Visas.AddAsync(visa, cancellationToken);
-            await _dbContext.Foreigners.AddAsync(foreigner, cancellationToken);
-
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return visa.SerialNumber;
+            
         }
     }
 }

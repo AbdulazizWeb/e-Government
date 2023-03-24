@@ -11,10 +11,12 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Queries
     public class GetAllLegalEntityQueryHandler : IQueryHandler<GetAllLegalEntityQuery, List<ResponseLegalEntityModel>>
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IBringAddressService _bringAddressService;
 
-        public GetAllLegalEntityQueryHandler(IApplicationDbContext dbContext)
+        public GetAllLegalEntityQueryHandler(IApplicationDbContext dbContext, IBringAddressService bringAddressService)
         {
             _dbContext = dbContext;
+            _bringAddressService = bringAddressService;
         }
 
         public async Task<List<ResponseLegalEntityModel>> Handle(GetAllLegalEntityQuery request, CancellationToken cancellationToken)
@@ -27,8 +29,29 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Queries
                     LegalEntityId = x.Id,
                     Name = x.Name,
                     Direction = x.Direction,
-                    CertificateSerialNumber = x.Certificates.FirstOrDefault(x => x.IsLast).SerialNumber,
-                    AddressId = x.LegalEntityAddresses.FirstOrDefault(x => x.IsLastAddress).AddressIdFromCadastre
+
+                    Certificates = x.Certificates.Select(x => new DocumentViewModel
+                    {
+                        Id = x.Id,
+                        SerialNumber = x.SerialNumber,
+                        DateOfIssue = x.DateOfIssue,
+                        ValidityPeriod = x.ValidityPeriod,
+                        StoppedDate = x.StoppedDate,
+                        IsValidity = x.IsValidity,
+                        IsLast = x.IsLast,
+                        BelongsCountryName = x.BelongsCountryName
+                    }).OrderBy(x => x.Id).ToList(),
+
+                    Addresses = x.LegalEntityAddresses.Select(x => new AddressViewModel
+                    {
+                        Id = x.Id,
+                        BuildingNumber = _bringAddressService.BringFullAddress(x.Id).BuildingNumber,
+                        StreetName = _bringAddressService.BringFullAddress(x.Id).StreetName,
+                        CityName = _bringAddressService.BringFullAddress(x.Id).CityName,
+                        StartDateOfUse = x.StartDateOfUse,
+                        EndDateOfUse = x.EndDateOfUse,
+                        IsLastAddress = x.IsLastAddress
+                    }).OrderBy(x => x.Id).ToList()
 
                 }).OrderBy(x => x.LegalEntityId).ToListAsync(cancellationToken);
         }

@@ -1,6 +1,7 @@
 ﻿using e_Government.Application.Abstractions;
 using e_Government.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace e_Government.Infrastructure.Persistence
 {

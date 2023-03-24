@@ -1,6 +1,7 @@
 ﻿using e_Government.Application.Abstractions;
 using e_Government.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace e_Goverment.Application.Tests.Mocks
 {
@@ -23,5 +24,6 @@ namespace e_Goverment.Application.Tests.Mocks
         public DbSet<PopulationAddress> PopulationAddresses { get; set; }
         public DbSet<PopulationFamily> PopulationFamilies { get; set; }
         public DbSet<Visa> Visas { get; set; }
+        DatabaseFacade DatabaseFacade { get; }
     }
 }

@@ -7,10 +7,7 @@ namespace e_Government.Application.DIOs
         public int LegalEntityId { get; set; }
         public string Name { get; set; }
         public Direction Direction { get; set; }
-        public string CertificateSerialNumber { get; set; }
-        public int AddressId { get; set; }
-        public string BuildingNumber { get; set; }
-        public string StreetName { get; set; }
-        public string CityName { get; set; }
+        public List<DocumentViewModel> Certificates { get; set; }
+        public List<AddressViewModel> Addresses { get; set; }        
     }
 }

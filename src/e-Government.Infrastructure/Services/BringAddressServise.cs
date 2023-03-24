@@ -1,5 +1,7 @@
 ﻿using e_Government.Application.Abstractions;
 using e_Government.Application.DIOs;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace e_Government.Infrastructure.Services
 {
@@ -9,11 +11,21 @@ namespace e_Government.Infrastructure.Services
         {
 
             //Bu yerda Client yozilishi kerak!!!
+            /* using HttpClient client = new HttpClient();
+             //HttpContent
+
+             var responce = await client.GetAsync($"https://datausa.io/api/data?drilldowns={searchAddressModel.}&searchAddressModel");
+
+             var result = await responce.Content.ReadAsStringAsync();
+
+             var responseAddressModel = JsonConvert.DeserializeObject<ResponseAddressModel>(result);           
+
+             return responseAddressModel;*/
 
             var response = new ResponseAddressModel
             {
                 Id = 12,
-                HostId = 1
+                HostId = 3
             };
 
             return response;
@@ -21,6 +33,17 @@ namespace e_Government.Infrastructure.Services
 
         public RequestAddressModel BringFullAddress(int id)
         {
+            //Bu yerda Client yozilishi kerak!!!
+            /*var client = new HttpClient();
+
+            var responce = await client.GetAsync("https://datausa.io/api/data?drilldowns=Nation&measures=id");
+
+            var result = await responce.Content.ReadAsStringAsync();
+
+            var requestAddressModel = JsonConvert.DeserializeObject<RequestAddressModel>(result);
+
+            return requestAddressModel;*/
+
             var response = new RequestAddressModel
             {
                 BuildingNumber = "A1",
@@ -29,7 +52,7 @@ namespace e_Government.Infrastructure.Services
             };
 
             return response;
-        }
+        }       
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using e_Government.Domain.Enums;
+using Microsoft.VisualBasic;
 
 namespace e_Government.Domain.Entities
 {
@@ -10,6 +11,6 @@ namespace e_Government.Domain.Entities
         public string MidleName { get; set; }
         public Nationality NationalityName { get; set; }
         public Gender Gender { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateOnly Birthday { get; set; }
     }
 }

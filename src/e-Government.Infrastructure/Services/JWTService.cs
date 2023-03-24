@@ -22,7 +22,7 @@ namespace e_Government.Infrastructure.Services
             var jwtClaim = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString())
             };
 
             var claims = ministryClaims.Concat(jwtClaim);
@@ -31,6 +31,7 @@ namespace e_Government.Infrastructure.Services
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Secret)),
                 SecurityAlgorithms.HmacSha256
                 );
+
             var token = new JwtSecurityToken(
                 _jwtConfiguration.ValidIssuer,
                 _jwtConfiguration.ValidAudience,

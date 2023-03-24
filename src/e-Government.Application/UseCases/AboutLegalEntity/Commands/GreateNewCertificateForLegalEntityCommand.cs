@@ -12,6 +12,7 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
     {
         public string Name { get; set; }
         public Direction Direction { get; set; }
+        public BelongsCountryName BelongsCountryName { get; set; }
     }
 
     public class GreateNewCertificateForLegalEntityCommandHandler : ICommandHandler<GreateNewCertificateForLegalEntityCommand, string>
@@ -26,21 +27,19 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
 
         public async Task<string> Handle(GreateNewCertificateForLegalEntityCommand request, CancellationToken cancellationToken)
         {
-            var legalEntity = await _dbContext.LegalEntities.FirstOrDefaultAsync(x => x.Name == request.Name && x.Direction == request.Direction);
+            var legalEntity = await _dbContext.LegalEntities
+                .Include(x => x.Certificates)
+                .FirstOrDefaultAsync(x => x.Name == request.Name && x.Direction == request.Direction, cancellationToken);
 
             if (legalEntity == null)
             {
                 throw new LegalEntityNotFoundException();
             }
 
-            var oldCertificate = await _dbContext.Certificates
-                .Include(x => x.LegalEntity)
-                .FirstOrDefaultAsync(x => x.LegalEntity.Name == request.Name && x.IsLast == true);
-
-            oldCertificate.IsLast = false;
-            oldCertificate.StoppedDate = DateTime.UtcNow;
-            oldCertificate.IsValidity = false;
-
+            legalEntity.Certificates.FirstOrDefault(x => x.IsLast == true).IsLast = false;
+            legalEntity.Certificates.FirstOrDefault(x => x.IsLast == true).StoppedDate = DateTime.UtcNow;
+            legalEntity.Certificates.FirstOrDefault(x => x.IsLast == true).IsValidity = false;
+                        
             var newCertificate = new Certificate
             {
                 LegalEntity = legalEntity,
@@ -48,20 +47,22 @@ namespace e_Government.Application.UseCases.AboutLegalEntity.Commands
                 ValidityPeriod = DateTime.UtcNow.AddYears(1),
                 IsValidity = true,
                 IsLast = true,
-                BelongsCountryName = BelongsCountryName.Uzbekistan
+                BelongsCountryName = request.BelongsCountryName,
+                SerialNumber = "C:"
             };
+
+            await _dbContext.Certificates.AddAsync(newCertificate, cancellationToken);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             var number = _generateSerialNumber.Generate(new GenerateSerialNumberServiceModel
             {
-                EntityId = oldCertificate.LegalEntityId,
+                EntityId = legalEntity.Id,
                 DocumentId = newCertificate.Id,
             });
 
-            newCertificate.SerialNumber = "C" + number;
+            newCertificate.SerialNumber += number;
 
-            _dbContext.Certificates.Update(oldCertificate);
-
-            await _dbContext.Certificates.AddAsync(newCertificate, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return newCertificate.SerialNumber;

@@ -1,5 +1,6 @@
 ﻿using e_Government.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace e_Government.Application.Abstractions
 {
@@ -17,6 +18,7 @@ namespace e_Government.Application.Abstractions
         public DbSet<PopulationAddress> PopulationAddresses { get; set; }
         public DbSet<PopulationFamily> PopulationFamilies { get; set; }
         public DbSet<Visa> Visas { get; set; }
+        public DatabaseFacade Database { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

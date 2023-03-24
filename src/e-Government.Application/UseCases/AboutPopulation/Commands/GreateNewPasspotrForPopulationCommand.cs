@@ -45,8 +45,13 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 ValidityPeriod = DateTime.UtcNow.AddYears(1),
                 IsValidity = true,
                 IsLast = true,
-                BelongsCountryName = lastPassport.BelongsCountryName
+                BelongsCountryName = lastPassport.BelongsCountryName,
+                SerialNumber = "P:" 
             };
+
+            await _dbContext.Passports.AddAsync(newPassport, cancellationToken);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             var number = _generateSerialNumber.Generate(new GenerateSerialNumberServiceModel
             {
@@ -54,11 +59,8 @@ namespace e_Government.Application.UseCases.AboutPopulation.Commands
                 DocumentId = newPassport.Id,
             });
 
-            newPassport.SerialNumber = "P" + number;
+            newPassport.SerialNumber += number;
 
-            _dbContext.Passports.Update(lastPassport);
-
-            await _dbContext.Passports.AddAsync(newPassport, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return newPassport.SerialNumber;
